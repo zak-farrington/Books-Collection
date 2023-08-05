@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BookCollectionApi.Models
+﻿namespace BooksCollection.Api.Models
 {
     public class BooksListRequest
     {

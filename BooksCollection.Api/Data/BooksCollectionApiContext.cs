@@ -1,8 +1,7 @@
-﻿using BookCollection.Api.Configuration;
+﻿using BooksCollection.Api.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 
-namespace BookCollection.Api.Data
+namespace BooksCollection.Api.Data
 {
     public class BooksCollectionApiContext : DbContext
     {
@@ -24,6 +23,6 @@ namespace BookCollection.Api.Data
         {
         }
 
-        public DbSet<BookCollectionApi.Models.Book> Book { get; set; } = default!;
+        public DbSet<Book> Book { get; set; } = default!;
     }
 }

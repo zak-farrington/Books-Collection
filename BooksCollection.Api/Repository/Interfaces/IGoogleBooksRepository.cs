@@ -1,6 +1,6 @@
-﻿using BookCollectionApi.Models;
+﻿using BooksCollection.Api.Models;
 
-namespace BookCollectionApi.Repository.Interfaces
+namespace BooksCollection.Api.Repository.Interfaces
 {
     public interface IGoogleBooksRepository
     {

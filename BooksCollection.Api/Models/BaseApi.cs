@@ -1,6 +1,6 @@
-﻿namespace BookCollectionApi.Models
+﻿namespace BooksCollection.Api.Models
 {
-    public class BaseApiResponse 
+    public class BaseApiResponse
     {
         public string ErrorMessage { get; set; }
         public bool IsSuccessful => string.IsNullOrEmpty(ErrorMessage);

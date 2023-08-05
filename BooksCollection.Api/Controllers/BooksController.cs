@@ -1,44 +1,43 @@
-﻿using BookCollectionApi.Models;
-using BookCollectionApi.Repository.Concretes;
-using BookCollectionApi.Repository.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using BooksCollection.Api.Decorators;
+using BooksCollection.Api.Models;
+using BooksCollection.Api.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookCollectionApi.Controllers
+namespace BooksCollection.Api.Controllers
 {
     [Route("api/books")]
     [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly IBooksRepository _booksRepo;
-       
-        public BooksController (IBooksRepository booksRepo) => _booksRepo = booksRepo;  
+
+        public BooksController(IBooksRepository booksRepo) => _booksRepo = booksRepo;
 
         [HttpGet("list")]
-        public Task<BooksListResponse> GetBooksList()
+        public async Task<BooksListResponse> GetBooksList()
         {
-            var response = _booksRepo.GetBooksListResponse();
+            var response = await _booksRepo.GetBooksListResponseAsync();
 
             return response;
         }
 
         [HttpPost("add")]
-        public bool AddBookAsync()
+        [ValidateModelState]
+        public async Task<AddBookResponse> AddBookAsync(AddBookRequest request)
         {
-            // TODO: Placeholder to add a book
-            var response = _booksRepo.GetBooksListResponse();
+            var response = await _booksRepo.AddBookAsync(request);
 
-            return true;
+            return response;
         }
 
 
         [HttpPost("delete")]
-        public bool DeleteBookAsync()
+        [ValidateModelState]
+        public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
         {
-            // TODO: Placeholder to delete a book
-            var response = _booksRepo.GetBooksListResponse();
+            var response = await _booksRepo.DeleteBookAsync(request);
 
-            return true;
+            return response;
         }
     }
 }

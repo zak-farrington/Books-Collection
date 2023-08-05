@@ -1,11 +1,10 @@
-﻿using Google.Apis.Books.v1.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BookCollectionApi.Models
+namespace BooksCollection.Api.Models
 {
-    public class GoogleBooksSearchRequest 
+    public class GoogleBooksSearchRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Title is required to search books.")]
         public string Title { get; set; }
     }
 

@@ -1,26 +1,34 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace BookCollectionApi.Models
+namespace BooksCollection.Api.Models
 {
     public class Book
     {
-        [System.ComponentModel.DataAnnotations.Key]
-        public int Id { get; set; } 
-
-        public string Uid { get; set; }
+        [Key, JsonIgnore]
+        public int Id { get; set; }
+        public string? Uid { get; set; }
+        /// <summary>
+        /// When the book was added to the collection.
+        /// </summary>
+        public DateTime CreationDate { get; set; }
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(100, ErrorMessage = "Title cannot be greater than 100 characters.")]
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public string AuthorName { get; set; }
-        public string AuthorUid { get; set; }
-        public DateTime PublishedDate { get; set; }
+        /// <summary>
+        /// When the book was published.
+        /// </summary>
+        public DateTime? PublishedDate { get; set; }
         /// <summary>
         /// MSRP is in USD.
         /// </summary>
-        public decimal Msrp { get; set; } 
-        public BookCategory Category { get; set; }
-        public string OtherCategoryName { get; set; }
-        public string ThumbnailUrl { get; set; }
+        public decimal? Msrp { get; set; }
+        public string? Isbn { get; set; }
+        public BookCategory? Category { get; set; }
+        public string? OtherCategoryName { get; set; }
+        public string? ImageUrl { get; set; }
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

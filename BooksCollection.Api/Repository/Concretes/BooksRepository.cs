@@ -1,45 +1,66 @@
-﻿using BookCollectionApi.Models;
-using BookCollectionApi.Repository.Interfaces;
+﻿using BooksCollection.Api.Data;
+using BooksCollection.Api.Models;
+using BooksCollection.Api.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace BookCollectionApi.Repository.Concretes
+namespace BooksCollection.Api.Repository.Concretes
 {
     public class BooksRepository : IBooksRepository
     {
-        public async Task<BooksListResponse> GetBooksListResponse()
+        private readonly BooksCollectionApiContext _context;
+
+        public BooksRepository(BooksCollectionApiContext context)
         {
-            var response = new BooksListResponse();
-            // Hardcode for now until I setup SQLight
-            var hardCodeBookList = new List<Book>();
+            _context = context;
+        }
 
-            var limitless = new Book
-            {
-                Uid = new Guid().ToString(),
-                Title = "Limitless",
-                Description = "Your brain is the most powerful technology in the world, but you never got the owner's manual.  Until now.",
-                AuthorName = "Jim Kwik",
-                Category = BookCategory.SelfHelp,
-                PublishedDate = DateTime.Now, // TODO: Get publish date
-                Msrp = (decimal)26.99,
-            };
-
-            var theOtherShore = new Book
-            {
-                Uid = new Guid().ToString(),
-                Title = "The Ohter shore",
-                Description = "Modern translation of the Heart Sutra about the insight that takes one to the Other Shore.",
-                AuthorName = "Thich Nacht Hahn",
-                Category = BookCategory.SelfHelp,
-                PublishedDate = DateTime.Now, // TODO: Get publish date
-                Msrp = (decimal)26.99,
-            };
-
-
-            hardCodeBookList.Add(limitless);
-            hardCodeBookList.Add(theOtherShore);
-
-            response.Books = hardCodeBookList;
-
+        public async Task<BooksListResponse> GetBooksListResponseAsync()
+        {
+            var books = await _context.Book.ToListAsync();
+            var response = new BooksListResponse { Books = books };
             return response;
         }
+
+        public async Task<AddBookResponse> AddBookAsync(AddBookRequest request)
+        {
+            var addBookResponse = new AddBookResponse();
+
+            request.Book.Uid = Guid.NewGuid().ToString();
+            request.Book.CreationDate = DateTime.Now;
+
+            _context.Book.Add(request.Book);
+            var rowsSaved = await _context.SaveChangesAsync();
+
+            if (rowsSaved <= 0)
+            {
+                addBookResponse.ErrorMessage = "Failed to add book to collection.";
+            }
+
+            return addBookResponse;
+        }
+
+        public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
+        {
+            var deleteBookResponse = new DeleteBookResponse();
+
+            var book = await _context.Book.FirstOrDefaultAsync(b => b.Uid == request.Uid);
+            if (book != null)
+            {
+                _context.Book.Remove(book);
+                var rowsDeleted = await _context.SaveChangesAsync();
+
+                if (rowsDeleted <= 0)
+                {
+                    deleteBookResponse.ErrorMessage = "Failed to delete book from collection.";
+                }
+            }
+            else
+            {
+                deleteBookResponse.ErrorMessage = "Book not found.";
+            }
+
+            return deleteBookResponse;
+        }
     }
+
 }

@@ -1,15 +1,16 @@
 ﻿using BookCollection.Api.Configuration;
-using BookCollectionApi.Models;
-using BookCollectionApi.Repository.Interfaces;
+using BooksCollection.Api.Models;
+using BooksCollection.Api.Repository.Interfaces;
 using Google.Apis.Books.v1;
 using Google.Apis.Services;
 
-namespace BookCollectionApi.Repository.Concretes
+namespace BooksCollection.Api.Repository.Concretes
 {
     public class GoogleBooksRepository : IGoogleBooksRepository
     {
         private readonly BooksService _booksService;
-        public GoogleBooksRepository() {
+        public GoogleBooksRepository()
+        {
 
             var googleBooksApiKey = GlobalConfig.GetSetting("GoogleBooksApiKey");
 
@@ -60,7 +61,7 @@ namespace BookCollectionApi.Repository.Concretes
                 PublishedDate = DateTime.TryParse(volume.VolumeInfo?.PublishedDate, out var publishedDate) ? publishedDate : default,
                 // Assuming that the MSRP is found in the 'ListPrice' property of the 'SaleInfo' object
                 Msrp = (decimal)(volume.SaleInfo?.ListPrice?.Amount ?? 0),
-                ThumbnailUrl = volume.VolumeInfo?.ImageLinks?.Thumbnail,
+                ImageUrl = volume.VolumeInfo?.ImageLinks?.Thumbnail,
             };
 
             return book;
