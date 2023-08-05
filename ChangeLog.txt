@@ -1,11 +1,17 @@
-7/31/2023
+2023/07/31
 	- Started demo project for fun because out of office projects are lacking. Created Book model, and basic app architecture.
 
-8/3/2023
+2023/08/03
 	- Created a global config static class available for Ambient Context demonstration.
 	- Created EF Core DbContext for Book.
 	- Applied Migrations to SQLite DB.
 
-8/4/2023
+2023/08/04
 	- Created GoogleBooksRepository for searching titles for demo of third-party API calls.
+	
+2023/08/05
+	- Clean up namespaces.
+	- Flushed out books/add and books/delete.
+	- Add custom attribute decorator for model validation.
+	
 	
