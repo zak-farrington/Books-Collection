@@ -17,12 +17,16 @@ namespace BooksCollection.Api.Data
             optionsBuilder.UseSqlite(connectionString);
         }
 
+        public BooksCollectionApiContext()
+        {
+
+        }
 
         public BooksCollectionApiContext(DbContextOptions<BooksCollectionApiContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Book> Book { get; set; } = default!;
+        public virtual DbSet<Book> Book { get; set; } = default!;
     }
 }

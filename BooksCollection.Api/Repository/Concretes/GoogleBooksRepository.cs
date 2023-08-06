@@ -1,4 +1,5 @@
 ﻿using BookCollection.Api.Configuration;
+using BooksCollection.Api.Constants;
 using BooksCollection.Api.Models;
 using BooksCollection.Api.Repository.Interfaces;
 using Google.Apis.Books.v1;
@@ -40,7 +41,7 @@ namespace BooksCollection.Api.Repository.Concretes
             }
             else
             {
-                response.ErrorMessage = "Could not find any titles.";
+                response.ErrorMessage = Messaging.ErrorMessages.CouldNotFindTitles;
             }
 
             return response;

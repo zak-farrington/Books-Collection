@@ -1,0 +1,23 @@
+﻿namespace BooksCollection.Api.Constants
+{
+    public static class Messaging
+    {
+        // Error message constants to be used by repos and unit tests.
+        public static class ErrorMessages
+        {
+            public const string DuplicateBookExists = "A book with that title already exists.";
+            public const string AddBookFailed = "Failed to add book to collection.";
+            public const string DeleteBookFailed = "Failed to delete book from collection.";
+            public const string BookNotFound = "Book not found.";
+            public const string CouldNotFindTitles = "Could not find any titles.";
+            public const string UnhandledException = "Unhandled exception has occurred.";
+            public const string NoTitlesFound = "Could not find any titles.";
+        }
+
+        // Error code correlates to ErrorMessages, if necessary. 
+        public static class ErrorCodes
+        {
+            // Not implemented.
+        }
+    }
+}

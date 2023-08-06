@@ -1,4 +1,5 @@
-﻿using BooksCollection.Api.Data;
+﻿using BooksCollection.Api.Constants;
+using BooksCollection.Api.Data;
 using BooksCollection.Api.Models;
 using BooksCollection.Api.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ namespace BooksCollection.Api.Repository.Concretes
 
             if (rowsSaved <= 0)
             {
-                addBookResponse.ErrorMessage = "Failed to add book to collection.";
+                addBookResponse.ErrorMessage = Messaging.ErrorMessages.AddBookFailed;
             }
 
             return addBookResponse;
@@ -51,16 +52,15 @@ namespace BooksCollection.Api.Repository.Concretes
 
                 if (rowsDeleted <= 0)
                 {
-                    deleteBookResponse.ErrorMessage = "Failed to delete book from collection.";
+                    deleteBookResponse.ErrorMessage = Messaging.ErrorMessages.DeleteBookFailed;
                 }
             }
             else
             {
-                deleteBookResponse.ErrorMessage = "Book not found.";
+                deleteBookResponse.ErrorMessage = Messaging.ErrorMessages.BookNotFound;
             }
 
             return deleteBookResponse;
         }
     }
-
 }
