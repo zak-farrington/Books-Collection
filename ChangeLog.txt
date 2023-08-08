@@ -1,17 +1,27 @@
-2023/07/31
-	- Started demo project for fun because out of office projects are lacking. Created Book model, and basic app architecture.
+2023/08/07
+	- Add 'books/modify' method and tests.
+	- Update 'books/delete' to use DELETE verb.
+	- Add LastUpdatedDate and MsrpUnit to Book object.
+	- Improve duplicate check when adding new book.
+	- Add BooksCollection.Web placeholder front-end React TypeScript project.
+	
+2023/08/06
+	- Add xUnit test project with unit and integration tests demo.
+
+2023/08/05
+	- Clean up namespaces.
+	- Flushed out 'books/add' and 'books/delete'.
+	- Add custom attribute decorator for model validation.
+	
+2023/08/04
+	- Created GoogleBooksRepository for searching titles for demo of third-party API calls.
 
 2023/08/03
+	- Add 'books/list' and placeholders for add & delete.
 	- Created a global config static class available for Ambient Context demonstration.
 	- Created EF Core DbContext for Book.
 	- Applied Migrations to SQLite DB.
 
-2023/08/04
-	- Created GoogleBooksRepository for searching titles for demo of third-party API calls.
-	
-2023/08/05
-	- Clean up namespaces.
-	- Flushed out books/add and books/delete.
-	- Add custom attribute decorator for model validation.
-	
-	
+2023/07/31
+	- Started demo project for fun because out of office projects are lacking. 
+	- Created Book model, and basic app architecture.
