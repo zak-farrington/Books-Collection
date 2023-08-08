@@ -88,6 +88,30 @@ namespace BooksCollection.Tests
         }
 
         [Fact]
+        public async Task ModifyBookAsync_ModifyBook_Success()
+        {
+            var request = new ModifyBookRequest
+            {
+                Book = _mockBook,
+            };
+
+            var updatedTitle = "The Other Shore";
+
+            var mockContext = CreateMockContext(_mockBook);
+            mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
+            var repository = new BooksRepository(mockContext.Object);
+
+            request.Book.Title = updatedTitle; 
+
+            var modifyResult = await repository.ModifyBookAsync(request);
+            Assert.Null(modifyResult.ErrorMessage);
+
+            var updatedBook = await repository.GetBookByUid(request.Book.Uid);
+
+            Assert.Equal(updatedTitle, updatedBook.Title);
+        }
+
+        [Fact]
         public async Task DeleteBookAsync_DeletesBook_Success()
         {
             var request = new DeleteBookRequest { Uid = Guid.Empty.ToString() }; // Empty guid always matches our _mockBook

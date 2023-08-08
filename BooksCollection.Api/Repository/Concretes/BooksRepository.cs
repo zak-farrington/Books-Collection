@@ -23,6 +23,11 @@ namespace BooksCollection.Api.Repository.Concretes
             var response = new BooksListResponse { Books = books };
             return response;
         }
+       
+        public async Task<Book> GetBookByUid(string uid)
+        {
+            return await _context.Book.FirstOrDefaultAsync(b => b.Uid == uid);
+        }
 
         public async Task<AddBookResponse> AddBookAsync(AddBookRequest request)
         {
@@ -57,7 +62,7 @@ namespace BooksCollection.Api.Repository.Concretes
         {
             var modifyBookResponse = new ModifyBookResponse();
 
-            var existingBook = await _context.Book.FirstOrDefaultAsync(b => b.Uid == request.Book.Uid);
+            var existingBook = await GetBookByUid(request.Book.Uid);
             if (existingBook == null)
             {
                 modifyBookResponse.ErrorMessage = Messaging.ErrorMessages.BookNotFound;
@@ -98,7 +103,7 @@ namespace BooksCollection.Api.Repository.Concretes
         {
             var deleteBookResponse = new DeleteBookResponse();
 
-            var book = await _context.Book.FirstOrDefaultAsync(b => b.Uid == request.Uid);
+            var book = await GetBookByUid(request.Uid);
             if (book != null)
             {
                 _context.Book.Remove(book);
