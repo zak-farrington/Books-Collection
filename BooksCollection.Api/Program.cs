@@ -6,8 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Initialize Global Config once and for all - example of Ambient Context dependency injection
+// Initialize Global Config once and for all - example of ambient context.
 GlobalConfig.Initialize(builder.Configuration);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalHostCors",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // Your client's origin here
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -29,6 +40,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("AllowLocalHostCors"); 
 }
 
 app.UseAuthorization();
