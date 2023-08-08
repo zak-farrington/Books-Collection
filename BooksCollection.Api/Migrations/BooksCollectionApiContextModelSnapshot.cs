@@ -42,8 +42,14 @@ namespace BookCollection.Api.Migrations
                     b.Property<string>("Isbn")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("TEXT");
+
                     b.Property<decimal?>("Msrp")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("MsrpUnit")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("OtherCategoryName")
                         .HasColumnType("TEXT");

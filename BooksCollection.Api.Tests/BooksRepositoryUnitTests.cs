@@ -19,7 +19,7 @@ namespace BooksCollection.Tests
             AuthorName = "Jim Kwik",
             Description = "Upgrade your brain, learn anything faster and unlock your exceptional life.",
             PublishedDate = DateTime.Today,
-            Category = BookCategory.SelfGrowth,
+            Category = BookCategory.SelfHelp,
             Msrp = (decimal)26.99,
             MsrpUnit = MsrpUnit.Usd,
             ImageUrl = "http://books.google.com/books/content?id=WibGDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
@@ -84,7 +84,7 @@ namespace BooksCollection.Tests
 
             var result = await repository.AddBookAsync(request);
 
-            Assert.Equal(Messaging.ErrorMessages.AddBookFailed, result.ErrorMessage);
+            Assert.Equal(Messaging.ErrorMessages.DuplicateBookExists, result.ErrorMessage);
         }
 
         [Fact]

@@ -28,8 +28,19 @@ namespace BooksCollection.Api.Repository.Concretes
         {
             var addBookResponse = new AddBookResponse();
 
+            // Note: Using .ToLower because SQLite doesn't support EF.Functions.Like
+            var existingBook = await _context.Book.FirstOrDefaultAsync(b => (request.Book.Isbn != null && b.Isbn == request.Book.Isbn) || b.Title.ToLower() == request.Book.Title.ToLower());
+            
+            if (existingBook != null)
+            {
+                // Duplicate ISBN or Title found.
+                addBookResponse.ErrorMessage = Messaging.ErrorMessages.DuplicateBookExists;
+                return addBookResponse;
+            }
+
             request.Book.Uid = Guid.NewGuid().ToString();
             request.Book.CreationDate = DateTime.Now;
+            request.Book.LastUpdatedDate = DateTime.Now;
 
             _context.Book.Add(request.Book);
             var rowsSaved = await _context.SaveChangesAsync();

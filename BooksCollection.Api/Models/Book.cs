@@ -12,6 +12,7 @@ namespace BooksCollection.Api.Models
         /// When the book was added to the collection.
         /// </summary>
         public DateTime CreationDate { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
         [Required(ErrorMessage = "Title is required.")]
         [StringLength(100, ErrorMessage = "Title cannot be greater than 100 characters.")]
         public string Title { get; set; }
@@ -25,6 +26,7 @@ namespace BooksCollection.Api.Models
         /// MSRP is in USD.
         /// </summary>
         public decimal? Msrp { get; set; }
+        public MsrpUnit? MsrpUnit { get; set; }
         public string? Isbn { get; set; }
         public BookCategory? Category { get; set; }
         public string? OtherCategoryName { get; set; }
@@ -42,4 +44,12 @@ namespace BooksCollection.Api.Models
         SelfHelp,
         Other
     }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum MsrpUnit
+    {
+        Usd,
+    }
+
+    
 }
