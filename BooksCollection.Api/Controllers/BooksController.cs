@@ -30,8 +30,16 @@ namespace BooksCollection.Api.Controllers
             return response;
         }
 
+        [HttpPatch("modify")]
+        [ValidateModelState]
+        public async Task<ModifyBookResponse> ModifyBookAsync(ModifyBookRequest request)
+        {
+            var response = await _booksRepo.ModifyBookAsync(request);
 
-        [HttpPost("delete")]
+            return response;
+        }
+
+        [HttpDelete("delete")]
         [ValidateModelState]
         public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
         {

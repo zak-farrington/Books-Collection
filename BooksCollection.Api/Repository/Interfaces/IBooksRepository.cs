@@ -6,6 +6,7 @@ namespace BooksCollection.Api.Repository.Interfaces
     {
         Task<BooksListResponse> GetBooksListResponseAsync();
         Task<AddBookResponse> AddBookAsync(AddBookRequest request);
+        Task<ModifyBookResponse> ModifyBookAsync(ModifyBookRequest request);
         Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request);
     }
 

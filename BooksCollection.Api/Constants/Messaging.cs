@@ -7,6 +7,7 @@
         {
             public const string DuplicateBookExists = "A book with that title already exists.";
             public const string AddBookFailed = "Failed to add book to collection.";
+            public const string ModifyBookFailed = "Failed to modify existing book.";
             public const string DeleteBookFailed = "Failed to delete book from collection.";
             public const string BookNotFound = "Book not found.";
             public const string CouldNotFindTitles = "Could not find any titles.";

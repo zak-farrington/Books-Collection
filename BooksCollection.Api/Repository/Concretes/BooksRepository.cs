@@ -9,6 +9,8 @@ namespace BooksCollection.Api.Repository.Concretes
     public class BooksRepository : IBooksRepository
     {
         private readonly BooksCollectionApiContext _context;
+        private string[] _unmodifiableProperties = { "Id", "CreationDate" }; // These properties cannot be updated by books/modify
+
 
         public BooksRepository(BooksCollectionApiContext context)
         {
@@ -39,6 +41,47 @@ namespace BooksCollection.Api.Repository.Concretes
 
             return addBookResponse;
         }
+
+        public async Task<ModifyBookResponse> ModifyBookAsync(ModifyBookRequest request)
+        {
+            var modifyBookResponse = new ModifyBookResponse();
+
+            var existingBook = await _context.Book.FirstOrDefaultAsync(b => b.Uid == request.Book.Uid);
+            if (existingBook == null)
+            {
+                modifyBookResponse.ErrorMessage = Messaging.ErrorMessages.BookNotFound;
+                return modifyBookResponse;
+            }
+
+            var properties = typeof(Book).GetProperties();
+            foreach (var property in properties)
+            {
+                if (_unmodifiableProperties.Any(s => string.Equals(property.Name, s)))
+                {
+                    // Skip properties that can't be modified.
+                    continue;
+                }
+
+                // Check if property should be modified.
+                var updatedValue = property.GetValue(request.Book);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existingBook, updatedValue);
+                }
+            }
+
+            existingBook.LastUpdatedDate = DateTime.Now;
+
+            var rowsSaved = await _context.SaveChangesAsync();
+
+            if (rowsSaved <= 0)
+            {
+                modifyBookResponse.ErrorMessage = Messaging.ErrorMessages.ModifyBookFailed;
+            }
+
+            return modifyBookResponse;
+        }
+
 
         public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
         {
