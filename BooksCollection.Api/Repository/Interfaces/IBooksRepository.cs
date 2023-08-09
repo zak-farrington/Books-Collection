@@ -8,7 +8,7 @@ namespace BooksCollection.Api.Repository.Interfaces
         Task<Book> GetBookByUid(string uid);
         Task<AddBookResponse> AddBookAsync(AddBookRequest request);
         Task<ModifyBookResponse> ModifyBookAsync(ModifyBookRequest request);
-        Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request);
+        Task<DeleteBookResponse> DeleteBookAsync(string uid);
     }
 
 }

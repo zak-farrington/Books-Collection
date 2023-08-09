@@ -2,6 +2,7 @@ using BooksCollection.Api.Constants;
 using BooksCollection.Api.Data;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System;
 
 namespace BooksCollection.Tests
 {
@@ -114,12 +115,12 @@ namespace BooksCollection.Tests
         [Fact]
         public async Task DeleteBookAsync_DeletesBook_Success()
         {
-            var request = new DeleteBookRequest { Uid = Guid.Empty.ToString() }; // Empty guid always matches our _mockBook
+            var guid = Guid.Empty.ToString(); // Empty guid always matches our _mockBook
             var mockContext = CreateMockContext(_mockBook);
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
             var repository = new BooksRepository(mockContext.Object);
 
-            var result = await repository.DeleteBookAsync(request);
+            var result = await repository.DeleteBookAsync(guid);
 
             Assert.Null(result.ErrorMessage);
         }
@@ -127,12 +128,12 @@ namespace BooksCollection.Tests
         [Fact]
         public async Task DeleteBookAsync_NonExistingBook_Fails()
         {
-            var request = new DeleteBookRequest { Uid = Guid.NewGuid().ToString() }; // Guid won't exist in our mocked list.
+            var guid = Guid.NewGuid().ToString(); // Guid won't exist in our mocked list.
             var mockContext = CreateMockContext(_mockBook);
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
             var repository = new BooksRepository(mockContext.Object);
 
-            var result = await repository.DeleteBookAsync(request);
+            var result = await repository.DeleteBookAsync(guid);
 
             Assert.Equal(Messaging.ErrorMessages.BookNotFound, result.ErrorMessage);
         }

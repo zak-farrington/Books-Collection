@@ -41,9 +41,9 @@ namespace BooksCollection.Api.Controllers
 
         [HttpDelete("delete")]
         [ValidateModelState]
-        public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
+        public async Task<DeleteBookResponse> DeleteBookAsync(string uid)
         {
-            var response = await _booksRepo.DeleteBookAsync(request);
+            var response = await _booksRepo.DeleteBookAsync(uid);
 
             return response;
         }

@@ -99,11 +99,17 @@ namespace BooksCollection.Api.Repository.Concretes
         }
 
 
-        public async Task<DeleteBookResponse> DeleteBookAsync(DeleteBookRequest request)
+        public async Task<DeleteBookResponse> DeleteBookAsync(string uid)
         {
             var deleteBookResponse = new DeleteBookResponse();
 
-            var book = await GetBookByUid(request.Uid);
+            if(!Guid.TryParse(uid, out _))
+            {
+                deleteBookResponse.ErrorMessage = Messaging.ErrorMessages.InvalidBookUid;
+                return deleteBookResponse;
+            }
+
+            var book = await GetBookByUid(uid);
             if (book != null)
             {
                 _context.Book.Remove(book);
