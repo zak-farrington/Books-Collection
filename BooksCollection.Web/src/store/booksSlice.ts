@@ -59,4 +59,6 @@ const booksSlice = createSlice({
   },
 });
 
+export const selectBooks = (state: any) => state.books.books;
+
 export default booksSlice.reducer;
