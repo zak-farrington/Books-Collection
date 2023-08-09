@@ -10,7 +10,7 @@ const Bookshelf = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getBooksList);
+        dispatch(getBooksList());
     }, []);
 
     const books = useSelector(selectBooks);

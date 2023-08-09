@@ -49,7 +49,7 @@ const AddModifyBookForm = ({ onClose }: { onClose: () => void }) => {
         console.log(addBookResponse)   
         if (addBookResponse.isSuccessful) {
             alert("Book added successfully.")
-            await dispatch(getBooksList);
+            await dispatch(getBooksList());
             onClose();
         } else {
             alert(addBookResponse.errorMessage || "An error occurred.");
