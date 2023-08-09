@@ -30,5 +30,17 @@ export enum BookCategory {
     imageUrl?: string | null;
 }
 
+export const defaultBook: Book = {
+    title: "",
+    description: null,
+    authorName: "",
+    publishedDate: null,
+    msrp: null,
+    isbn: null,
+    category: null,
+    otherCategoryName: null,
+    imageUrl: null,
+};
+
   
   

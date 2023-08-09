@@ -1,0 +1,1 @@
+export const bookThumbnailUnavailableSrc = "/cover-unavailable.png";

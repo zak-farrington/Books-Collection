@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { selectBooks } from "../../store/booksSlice";
+import { getBooksList, selectBooks } from "../../store/booksSlice";
 import BookshelfRow from "../BookshelfRow/BookshelfRow";
 import BookshelfActions from "../BookshelfActions/BookshelfActions";
 import "./Bookshelf.less";
+import { useAppDispatch } from "../../store/store";
 
 const Bookshelf = () => {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(getBooksList);
+    }, []);
 
     const books = useSelector(selectBooks);
 

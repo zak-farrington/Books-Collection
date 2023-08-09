@@ -56,9 +56,13 @@ const booksSlice = createSlice({
       .addCase(getBooksList.fulfilled, (state, action) => {
         state.books = action.payload.books;
       })
+    .addCase(searchGoogleBooks.fulfilled, (state, action) => {
+        state.googleSearchBooks = action.payload.books;
+    });
   },
 });
 
 export const selectBooks = (state: any) => state.books.books;
+export const selectGoogleSearchBooks = (state: any) => state.books.googleSearchBooks;
 
 export default booksSlice.reducer;
