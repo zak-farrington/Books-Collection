@@ -24,9 +24,9 @@ namespace BooksCollection.Tests
         public async Task SearchGoogleBooksAsync_ReturnsBooks_Success()
         {
             var repository = new GoogleBooksRepository();
-            var request = new GoogleBooksSearchRequest { Title = "Limitless" };
+            var title = "Limitless";
 
-            var response = await repository.SearchGoogleBooksAsync(request);
+            var response = await repository.SearchGoogleBooksAsync(title);
 
             Assert.Null(response.ErrorMessage);
             Assert.True(response.Books.Count > 0);
@@ -36,9 +36,9 @@ namespace BooksCollection.Tests
         public async Task SearchGoogleBooksAsync_NoBooksFound_Fails()
         {
             var repository = new GoogleBooksRepository();
-            var request = new GoogleBooksSearchRequest { Title = Guid.NewGuid().ToString() }; // Hopefully there's no books found that match a random Guid.
+            var title = Guid.NewGuid().ToString(); // Hopefully there's no books found that match a random Guid.
 
-            var response = await repository.SearchGoogleBooksAsync(request);
+            var response = await repository.SearchGoogleBooksAsync(title);
 
             Assert.Equal(Messaging.ErrorMessages.CouldNotFindTitles, response.ErrorMessage);
         }

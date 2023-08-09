@@ -14,12 +14,7 @@
             public const string UnhandledException = "Unhandled exception has occurred.";
             public const string NoTitlesFound = "Could not find any titles.";
             public const string InvalidBookUid = "Invalid book identifier supplied.";
-        }
-
-        // Error code correlates to ErrorMessages, if necessary. 
-        public static class ErrorCodes
-        {
-            // Not implemented.
+            public const string InvalidTitleSupplied = "Invalid title supplied.";
         }
     }
 }

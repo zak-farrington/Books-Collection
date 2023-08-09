@@ -27,11 +27,16 @@ namespace BooksCollection.Api.Repository.Concretes
         /// </summary>
         /// <param name="request"></param>
         /// <returns>GoogleBooksSearchResponse</returns>
-        public async Task<GoogleBooksSearchResponse> SearchGoogleBooksAsync(GoogleBooksSearchRequest request)
+        public async Task<GoogleBooksSearchResponse> SearchGoogleBooksAsync(string title)
         {
             var response = new GoogleBooksSearchResponse();
 
-            var booksRequest = _booksService.Volumes.List($"intitle:{request.Title}");
+            if(string.IsNullOrEmpty(title))
+            {
+                response.ErrorMessage = Messaging.ErrorMessages.InvalidTitleSupplied;
+            }
+
+            var booksRequest = _booksService.Volumes.List($"intitle:{title}");
             var booksResponse = await booksRequest.ExecuteAsync();
 
             if (booksResponse?.Items?.Count > 0)
@@ -58,11 +63,12 @@ namespace BooksCollection.Api.Repository.Concretes
             {
                 Title = volume.VolumeInfo?.Title,
                 Description = volume.VolumeInfo?.Description,
-                AuthorName = volume.VolumeInfo?.Authors?.FirstOrDefault(), // Assuming the first author if there are multiple
+                AuthorName = volume.VolumeInfo?.Authors?.FirstOrDefault(),
                 PublishedDate = DateTime.TryParse(volume.VolumeInfo?.PublishedDate, out var publishedDate) ? publishedDate : default,
-                // Assuming that the MSRP is found in the 'ListPrice' property of the 'SaleInfo' object
                 Msrp = (decimal)(volume.SaleInfo?.ListPrice?.Amount ?? 0),
+                MsrpUnit = MsrpUnit.Usd,
                 ImageUrl = volume.VolumeInfo?.ImageLinks?.Thumbnail,
+                //Rating = volume.VolumeInfo.AverageRating,
             };
 
             return book;

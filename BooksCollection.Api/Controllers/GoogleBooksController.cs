@@ -13,11 +13,11 @@ namespace BooksCollection.Api.Controllers
 
         public GoogleBooksController(IGoogleBooksRepository googleBooksRepo) => _googleBooksRepo = googleBooksRepo;
 
-        [HttpPost("search")]
+        [HttpGet("search")]
         [ValidateModelState]
-        public async Task<GoogleBooksSearchResponse> SearchGoogleBooksAsync(GoogleBooksSearchRequest request)
+        public async Task<GoogleBooksSearchResponse> SearchGoogleBooksAsync(string title)
         {
-            var response = await _googleBooksRepo.SearchGoogleBooksAsync(request).ConfigureAwait(false);
+            var response = await _googleBooksRepo.SearchGoogleBooksAsync(title);
 
             return response;
         }
