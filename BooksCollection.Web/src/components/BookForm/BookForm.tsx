@@ -1,6 +1,9 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Book, BookCategory } from '../../models/Book';
+import { bookThumbnailUnavailableSrc } from '../../utils/constants';
+import { formatCurrency } from '../../utils/formatters';
+import "./BookForm.less";
 
 const BookForm: React.FC<{
     book: Book | undefined;
@@ -9,17 +12,17 @@ const BookForm: React.FC<{
     onCategoryChange: (value: BookCategory) => void;
 }> = ({ book, isReadOnly, onInputChange, onCategoryChange }) => (
     <div>
-        <Form.Group>
+        <Form.Group className="formGroup">
             <Form.Label>Title</Form.Label>
             {isReadOnly ? <div>{book?.title || ""}</div> : <Form.Control type="text" name="title" value={book?.title || ""} onChange={onInputChange} />}
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="formGroup">
             <Form.Label>Description</Form.Label>
-            {isReadOnly ? <div>{book?.description || ""}</div> : <Form.Control as="textarea" rows={3} name="description" value={book?.description || ""} onChange={onInputChange} />}
+            {isReadOnly ? <div className="bookDescriptionLabel">{book?.description || ""}</div> : <Form.Control as="textarea" rows={3} name="description" value={book?.description || ""} onChange={onInputChange} />}
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group className="formGroup">
             <Form.Label>Author Name</Form.Label>
             {isReadOnly ? <div>{book?.authorName || ""}</div> : <Form.Control type="text" name="authorName" value={book?.authorName || ""} onChange={onInputChange} />}
         </Form.Group>
@@ -30,17 +33,21 @@ const BookForm: React.FC<{
         {/*</Form.Group>*/}
 
 
-        <Form.Group>
+        <Form.Group className="formGroup">
             <Form.Label>MSRP</Form.Label>
-            {isReadOnly ? <div>{book?.msrp || ""}</div> : <Form.Control type="number" name="msrp" value={book?.msrp || ""} onChange={onInputChange} />}
+            {isReadOnly ? <div>{book?.msrp ? formatCurrency(book.msrp) : "N/A"}</div> : <Form.Control type="number" name="msrp" value={book?.msrp || ""} onChange={onInputChange} />}
         </Form.Group>
 
-        {/*<Form.Group>*/}
+        {/*<Form.Group className="formGroup">*/}
         {/*    <Form.Label>ISBN</Form.Label>*/}
-        {/*    <Form.Control type="text" name="isbn" value={localBook?.isbn || ""} onChange={handleInputChange} />*/}
+        {/*    {isReadOnly ? (*/}
+        {/*        <div>{book?.isbn || ""}</div>*/}
+        {/*    ) : (*/}
+        {/*        <Form.Control type="text" name="isbn" value={book?.isbn || ""} onChange={onInputChange} />*/}
+        {/*    )}*/}
         {/*</Form.Group>*/}
 
-        <Form.Group>
+        <Form.Group className="formGroup">
             <Form.Label>Category</Form.Label>
             {isReadOnly ? (
                 <div>{book?.category || ""}</div>
@@ -54,15 +61,24 @@ const BookForm: React.FC<{
         </Form.Group>
 
         {book?.category === BookCategory.Other && (
-            <Form.Group>
+            <Form.Group className="formGroup">
                 <Form.Label>Other Category Name</Form.Label>
                 {isReadOnly ? <div>{book?.otherCategoryName || ""}</div> : <Form.Control type="text" name="otherCategoryName" value={book?.otherCategoryName || ""} onChange={onInputChange} />}
             </Form.Group>
         )}
 
-        <Form.Group>
-            <Form.Label>Image URL</Form.Label>
-            {isReadOnly ? <div>{book?.imageUrl || ""}</div> : <Form.Control type="text" name="imageUrl" value={book?.imageUrl || ""} onChange={onInputChange} />}
+        <Form.Group className="formGroup">
+            {isReadOnly ? (
+                <div>
+                    <Form.Label>Image</Form.Label>
+                    <img className="bookDetailsThumbnail" src={book?.imageUrl || bookThumbnailUnavailableSrc} alt="Book Thumbnail"/>
+                </div>
+                ) : (
+                <div>
+                    <Form.Label>Image URL</Form.Label>
+                    <Form.Control type="text" name="imageUrl" value={book?.imageUrl || ""} onChange={onInputChange} />
+                </div>
+            )}
         </Form.Group>
     </div>
 );
