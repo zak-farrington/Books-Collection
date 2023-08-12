@@ -91,7 +91,11 @@ const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             {showGoogleSearchForm ? googleSearchFormTsx : addBookFormTsx}
             <div className="addBookButtonContainer">
                 <Button onClick={() => setShowGoogleSearchForm(!showGoogleSearchForm)}>
-                    {showGoogleSearchForm ? "Return to Manual Entry" : "Search Google Books"}
+                    {showGoogleSearchForm ? "Cancel Search" : (
+                        <span>
+                            <i className="bi bi-google"></i>Search Google Books
+                        </span>
+                    )}
                 </Button>
                 <Button variant="success" onClick={handleSaveBook}><i className="bi bi-save"></i> Save</Button>
             </div>
