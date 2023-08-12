@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { addBook, getBooksList, searchGoogleBooks, selectGoogleSearchBooks } from "../../store/booksSlice";
-import { Book, BookCategory, defaultBook } from "../../models/Book";
 import { useAppDispatch } from "../../store/store";
-import "./AddModifyBook.less";
+import { addBook, getBooksList, searchGoogleBooks, selectGoogleSearchBooks } from "../../store/booksSlice";
 import { bookThumbnailUnavailableSrc } from "../../utils/constants";
+import { Book, BookCategory, defaultBook } from "../../models/Book";
 import { AddBookRequest, AddBookResponse } from "../../models/AddBook";
+import BookForm from "../BookForm/BookForm";
+import "./AddModifyBook.less";
 
-const AddModifyBookForm = ({ onClose }: { onClose: () => void }) => {
+const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const [localBook, setLocalBook] = useState<Book | undefined>(defaultBook);
     const [showGoogleSearchForm, setShowGoogleSearchForm] = useState(false);
     const [searchTitle, setSearchTitle] = useState("");
@@ -31,7 +32,6 @@ const AddModifyBookForm = ({ onClose }: { onClose: () => void }) => {
     };
 
     const handleSearchResultClick = (resultBook: Book) => {
-        console.log(resultBook)
         setLocalBook({
             ...resultBook
         });
@@ -46,7 +46,6 @@ const AddModifyBookForm = ({ onClose }: { onClose: () => void }) => {
         const dispatchResp = await dispatch(addBook(saveBookRequest));
         const addBookResponse = dispatchResp.payload as AddBookResponse;
 
-        console.log(addBookResponse)   
         if (addBookResponse.isSuccessful) {
             alert("Book added successfully.")
             await dispatch(getBooksList());
@@ -83,60 +82,7 @@ const AddModifyBookForm = ({ onClose }: { onClose: () => void }) => {
         </div>
     );
 
-    const addBookFormJsx = (
-        <div>
-            <Form.Group>
-                <Form.Label>Title</Form.Label>
-                <Form.Control type="text" name="title" value={localBook?.title || ""} onChange={handleInputChange} />
-            </Form.Group>
-
-            <Form.Group>
-                <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" rows={3} name="description" value={localBook?.description || ""} onChange={handleInputChange} />
-            </Form.Group>
-
-            <Form.Group>
-                <Form.Label>Author Name</Form.Label>
-                <Form.Control type="text" name="authorName" value={localBook?.authorName || ""} onChange={handleInputChange} />
-            </Form.Group>
-
-            {/*<Form.Group>*/}
-            {/*    <Form.Label>Published Date</Form.Label>*/}
-            {/*    <Form.Control type="date" name="publishedDate" value={formatDate()} onChange={handleInputChange} />*/}
-            {/*</Form.Group>*/}
-
-            <Form.Group>
-                <Form.Label>MSRP</Form.Label>
-                <Form.Control type="number" name="msrp" value={localBook?.msrp || ""} onChange={handleInputChange} />
-            </Form.Group>
-
-            {/*<Form.Group>*/}
-            {/*    <Form.Label>ISBN</Form.Label>*/}
-            {/*    <Form.Control type="text" name="isbn" value={localBook?.isbn || ""} onChange={handleInputChange} />*/}
-            {/*</Form.Group>*/}
-
-            <Form.Group>
-                <Form.Label>Category</Form.Label>
-                <Form.Control as="select" name="category" value={localBook?.category || ""} onChange={(e) => handleCategoryChange(e.target.value as unknown as BookCategory)}>
-                    {Object.values(BookCategory).map((category, index) => (
-                        <option value={category} key={index}>{category}</option>
-                    ))}
-                </Form.Control>
-            </Form.Group>
-
-            {localBook?.category === BookCategory.Other && (
-                <Form.Group>
-                    <Form.Label>Other Category Name</Form.Label>
-                    <Form.Control type="text" name="otherCategoryName" value={localBook?.otherCategoryName || ""} onChange={handleInputChange} />
-                </Form.Group>
-            )}
-
-            <Form.Group>
-                <Form.Label>Image URL</Form.Label>
-                <Form.Control type="text" name="imageUrl" value={localBook?.imageUrl || ""} onChange={handleInputChange} />
-            </Form.Group>
-        </div>
-    );
+    const addBookFormJsx = (<BookForm book={localBook} onInputChange={handleInputChange} onCategoryChange={handleCategoryChange} isReadOnly={false} />);
 
     return (
         <div>
