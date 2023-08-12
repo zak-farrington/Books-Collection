@@ -26,7 +26,7 @@ const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         setLocalBook({ ...localBook, category: value });
     };
 
-    const handleSearchSubmit = (e: React.FormEvent) => {
+    const handleSearchSubmitClick = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(searchGoogleBooks(searchTitle));
     };
@@ -47,17 +47,17 @@ const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         const addBookResponse = dispatchResp.payload as AddBookResponse;
 
         if (addBookResponse.isSuccessful) {
-            alert("Book added successfully.")
             await dispatch(getBooksList());
             onClose();
+            alert("Book added successfully.");
         } else {
             alert(addBookResponse.errorMessage || "An error occurred.");
         }
     };
 
-    const googleSearchFormJsx = (
+    const googleSearchFormTsx = (
         <div>
-            <Form onSubmit={handleSearchSubmit} className="googleSearchForm">
+            <Form onSubmit={handleSearchSubmitClick} className="googleSearchForm">
                 <Form.Group>
                     <Form.Label>Search Google for Title</Form.Label>
                     <Form.Control
@@ -82,12 +82,14 @@ const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </div>
     );
 
-    const addBookFormJsx = (<BookForm book={localBook} onInputChange={handleInputChange} onCategoryChange={handleCategoryChange} isReadOnly={false} />);
+    const addBookFormTsx = (
+        <BookForm book={localBook} onInputChange={handleInputChange} onCategoryChange={handleCategoryChange} isReadOnly={false} />
+    );
 
     return (
         <div>
-            {showGoogleSearchForm ? googleSearchFormJsx : addBookFormJsx}
-            <div className="bookDetailsButtonContainer">
+            {showGoogleSearchForm ? googleSearchFormTsx : addBookFormTsx}
+            <div className="addBookButtonContainer">
                 <Button onClick={() => setShowGoogleSearchForm(!showGoogleSearchForm)}>
                     {showGoogleSearchForm ? "Return to Manual Entry" : "Search Google Books"}
                 </Button>
