@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import ApiService from "../services/ApiService";
 import { AddBookRequest } from "../models/AddBook";
 import { ModifyBookRequest } from "../models/ModifyBook";
-import { DeleteBookRequest } from "../models/DeleteBook";
 import { BookSliceContext } from "../models/BookSliceContext";
 
 
@@ -29,8 +28,8 @@ export const modifyBook = createAsyncThunk(
 
 export const deleteBook = createAsyncThunk(
   "books/deleteBook",
-  async (request: DeleteBookRequest) => {
-    return await ApiService.deleteBook(request);
+  async (uid: string) => {
+    return await ApiService.deleteBook(uid);
   }
 );
 

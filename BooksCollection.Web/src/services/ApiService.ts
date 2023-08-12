@@ -2,7 +2,7 @@ import axios from "axios";
 import { AddBookRequest, AddBookResponse } from "../models/AddBook";
 import { BooksListResponse } from "../models/BookList";
 import { ModifyBookRequest, ModifyBookResponse } from "../models/ModifyBook";
-import { DeleteBookRequest, DeleteBookResponse } from "../models/DeleteBook";
+import { DeleteBookResponse } from "../models/DeleteBook";
 import { GoogleBooksSearchResponse } from "../models/GoogleBooksSearch";
 import config from "../config";
 
@@ -35,9 +35,9 @@ class ApiService {
         return response.data;
     }
 
-    async deleteBook(request: DeleteBookRequest): Promise<DeleteBookResponse> {
-        const url = `${this.ApiUrlBase}/books/delete`;
-        const response = await axios.delete(url, { data: request });
+    async deleteBook(uid: string): Promise<DeleteBookResponse> {
+        const url = `${this.ApiUrlBase}/books/delete?uid=${encodeURIComponent(uid)}`;
+        const response = await axios.delete(url);
         return response.data;
     }
 
