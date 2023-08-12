@@ -1,3 +1,10 @@
+2023/08/08
+	- Add models & components.
+	- Add React Redux store and booksSlice
+	- Add ApiService.ts based on axios.
+	- Add LESS and component styles.
+	- Add basic functionality to list books, add a book, and search Google Books.
+
 2023/08/07
 	- Add 'books/modify' method and tests.
 	- Update 'books/delete' to use DELETE verb.
