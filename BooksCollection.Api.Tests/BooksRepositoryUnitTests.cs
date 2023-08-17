@@ -1,8 +1,9 @@
 using BooksCollection.Api.Constants;
 using BooksCollection.Api.Data;
+using BooksCollection.Api.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Moq.EntityFrameworkCore;
-using System;
 
 namespace BooksCollection.Tests
 {
@@ -31,7 +32,7 @@ namespace BooksCollection.Tests
         /// </summary>
         /// <param name="_mockBook"></param>
         /// <returns></returns>
-        private Mock<BooksCollectionApiContext> CreateMockContext(Book? book)
+        private Mock<BooksCollectionDbContext> CreateMockContext(Book? book)
         {
             var books = new List<Book> { };
             if (book != null)
@@ -39,16 +40,18 @@ namespace BooksCollection.Tests
                 books.Add(book);
             }
 
-            var mockContext = new Mock<BooksCollectionApiContext>();
+            var mockContext = new Mock<BooksCollectionDbContext>();
             mockContext.Setup(x => x.Book).ReturnsDbSet(books);
             return mockContext;
         }
+
+        private Mock<IHubContext<BooksCollectionHub>> _mockHub => new Mock<IHubContext<BooksCollectionHub>>();
 
         [Fact]
         public async Task GetBooksListResponseAsync_ReturnsBooks_Success()
         {
             var mockContext = CreateMockContext(_mockBook);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
             var result = await repository.GetBooksListResponseAsync();
 
@@ -65,7 +68,7 @@ namespace BooksCollection.Tests
 
             var mockContext = CreateMockContext(null); // Create mock context without book
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
             var result = await repository.AddBookAsync(request);
 
@@ -81,7 +84,7 @@ namespace BooksCollection.Tests
             };
 
             var mockContext = CreateMockContext(_mockBook);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
             var result = await repository.AddBookAsync(request);
 
@@ -100,9 +103,9 @@ namespace BooksCollection.Tests
 
             var mockContext = CreateMockContext(_mockBook);
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
-            request.Book.Title = updatedTitle; 
+            request.Book.Title = updatedTitle;
 
             var modifyResult = await repository.ModifyBookAsync(request);
             Assert.Null(modifyResult.ErrorMessage);
@@ -118,7 +121,7 @@ namespace BooksCollection.Tests
             var guid = Guid.Empty.ToString(); // Empty guid always matches our _mockBook
             var mockContext = CreateMockContext(_mockBook);
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
             var result = await repository.DeleteBookAsync(guid);
 
@@ -131,7 +134,7 @@ namespace BooksCollection.Tests
             var guid = Guid.NewGuid().ToString(); // Guid won't exist in our mocked list.
             var mockContext = CreateMockContext(_mockBook);
             mockContext.Setup(ctx => ctx.SaveChangesAsync(default)).ReturnsAsync(1);
-            var repository = new BooksRepository(mockContext.Object);
+            var repository = new BooksRepository(mockContext.Object, _mockHub.Object);
 
             var result = await repository.DeleteBookAsync(guid);
 

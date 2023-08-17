@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCollection.Api.Migrations
 {
-    [DbContext(typeof(BooksCollectionApiContext))]
+    [DbContext(typeof(BooksCollectionDbContext))]
     partial class BooksCollectionApiContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

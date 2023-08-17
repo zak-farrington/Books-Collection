@@ -1,5 +1,6 @@
 using BookCollection.Api.Configuration;
 using BooksCollection.Api.Data;
+using BooksCollection.Api.Hubs;
 using BooksCollection.Api.Repository.Concretes;
 using BooksCollection.Api.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -30,7 +32,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBooksRepository, BooksRepository>();
 builder.Services.AddScoped<IGoogleBooksRepository, GoogleBooksRepository>();
 
-builder.Services.AddDbContext<BooksCollectionApiContext>(options =>
+builder.Services.AddDbContext<BooksCollectionDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BookCollectionApiContext")));
 
 var app = builder.Build();
@@ -40,12 +42,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors("AllowLocalHostCors"); 
+    app.UseCors("AllowLocalHostCors");
 }
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<BooksCollectionHub>("/booksCollectionHub");
 
 
 app.Run();

@@ -1,32 +1,38 @@
 ﻿using BooksCollection.Api.Constants;
 using BooksCollection.Api.Data;
+using BooksCollection.Api.Hubs;
 using BooksCollection.Api.Models;
 using BooksCollection.Api.Repository.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace BooksCollection.Api.Repository.Concretes
 {
     public class BooksRepository : IBooksRepository
     {
-        private readonly BooksCollectionApiContext _context;
+        private readonly BooksCollectionDbContext _dbContext;
+        private readonly IHubContext<BooksCollectionHub> _hubContext;
+
         private string[] _unmodifiableProperties = { "Id", "CreationDate" }; // These properties cannot be updated by books/modify
 
-
-        public BooksRepository(BooksCollectionApiContext context)
+        public BooksRepository(BooksCollectionDbContext context, IHubContext<BooksCollectionHub> hub)
         {
-            _context = context;
+            _dbContext = context;
+            _hubContext = hub;
         }
 
         public async Task<BooksListResponse> GetBooksListResponseAsync()
         {
-            var books = await _context.Book.ToListAsync();
+            var books = await _dbContext.Book.ToListAsync();
+
+
             var response = new BooksListResponse { Books = books };
             return response;
         }
-       
+
         public async Task<Book> GetBookByUid(string uid)
         {
-            return await _context.Book.FirstOrDefaultAsync(b => b.Uid == uid);
+            return await _dbContext.Book.FirstOrDefaultAsync(b => b.Uid == uid);
         }
 
         public async Task<AddBookResponse> AddBookAsync(AddBookRequest request)
@@ -34,8 +40,8 @@ namespace BooksCollection.Api.Repository.Concretes
             var addBookResponse = new AddBookResponse();
 
             // Note: Using .ToLower because SQLite doesn't support EF.Functions.Like
-            var existingBook = await _context.Book.FirstOrDefaultAsync(b => (request.Book.Isbn != null && b.Isbn == request.Book.Isbn) || b.Title.ToLower() == request.Book.Title.ToLower());
-            
+            var existingBook = await _dbContext.Book.FirstOrDefaultAsync(b => (request.Book.Isbn != null && b.Isbn == request.Book.Isbn) || b.Title.ToLower() == request.Book.Title.ToLower());
+
             if (existingBook != null)
             {
                 // Duplicate ISBN or Title found.
@@ -47,12 +53,17 @@ namespace BooksCollection.Api.Repository.Concretes
             request.Book.CreationDate = DateTime.Now;
             request.Book.LastUpdatedDate = DateTime.Now;
 
-            _context.Book.Add(request.Book);
-            var rowsSaved = await _context.SaveChangesAsync();
+            _dbContext.Book.Add(request.Book);
+            var rowsSaved = await _dbContext.SaveChangesAsync();
 
             if (rowsSaved <= 0)
             {
                 addBookResponse.ErrorMessage = Messaging.ErrorMessages.AddBookFailed;
+            }
+
+            if (addBookResponse.IsSuccessful)
+            {
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookAddedOrModified, request.Book);
             }
 
             return addBookResponse;
@@ -88,22 +99,26 @@ namespace BooksCollection.Api.Repository.Concretes
 
             existingBook.LastUpdatedDate = DateTime.Now;
 
-            var rowsSaved = await _context.SaveChangesAsync();
+            var rowsSaved = await _dbContext.SaveChangesAsync();
 
             if (rowsSaved <= 0)
             {
                 modifyBookResponse.ErrorMessage = Messaging.ErrorMessages.ModifyBookFailed;
             }
 
+            if (modifyBookResponse.IsSuccessful)
+            {
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookAddedOrModified, existingBook);
+            }
+
             return modifyBookResponse;
         }
-
 
         public async Task<DeleteBookResponse> DeleteBookAsync(string uid)
         {
             var deleteBookResponse = new DeleteBookResponse();
 
-            if(!Guid.TryParse(uid, out _))
+            if (!Guid.TryParse(uid, out _))
             {
                 deleteBookResponse.ErrorMessage = Messaging.ErrorMessages.InvalidBookUid;
                 return deleteBookResponse;
@@ -112,8 +127,8 @@ namespace BooksCollection.Api.Repository.Concretes
             var book = await GetBookByUid(uid);
             if (book != null)
             {
-                _context.Book.Remove(book);
-                var rowsDeleted = await _context.SaveChangesAsync();
+                _dbContext.Book.Remove(book);
+                var rowsDeleted = await _dbContext.SaveChangesAsync();
 
                 if (rowsDeleted <= 0)
                 {
@@ -123,6 +138,11 @@ namespace BooksCollection.Api.Repository.Concretes
             else
             {
                 deleteBookResponse.ErrorMessage = Messaging.ErrorMessages.BookNotFound;
+            }
+
+            if (deleteBookResponse.IsSuccessful)
+            {
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookRemovedFrom);
             }
 
             return deleteBookResponse;

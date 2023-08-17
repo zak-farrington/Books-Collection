@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCollection.Api.Migrations
 {
-    [DbContext(typeof(BooksCollectionApiContext))]
+    [DbContext(typeof(BooksCollectionDbContext))]
     [Migration("20230805164318_ThumbnailImage")]
     partial class ThumbnailImage
     {

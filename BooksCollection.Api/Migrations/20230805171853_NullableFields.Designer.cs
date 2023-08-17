@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookCollection.Api.Migrations
 {
-    [DbContext(typeof(BooksCollectionApiContext))]
+    [DbContext(typeof(BooksCollectionDbContext))]
     [Migration("20230805171853_NullableFields")]
     partial class NullableFields
     {
