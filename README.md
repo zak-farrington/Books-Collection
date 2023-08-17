@@ -5,6 +5,7 @@
 This application demos a few features:
 - REST API practices
 - EF Core
+- SignalR messaging to client
 - Ambient Context dependency injection
 - Custom attribute decorators
 - Custom middleware
