@@ -1,27 +1,32 @@
 # Books-Collection
 
-## .NET Core 7 REST API Demo.
+## .NET Core 7 REST API Demo
 
-This application demos a few features:
-- REST API practices
-- EF Core
-- SignalR messaging to client
-- Ambient Context dependency injection
+This application demonstrates the following features:
+- **RESTful API** designed using well-established architectural patterns in **C#**
+- **Entity Framework (EF Core)** code-first data access
+- Real-time client communication with **SignalR**
+- Integration with third-party APIs
+- Unit and integration testing with **xUnit**
 - Custom attribute decorators
 - Custom middleware
-- xUnit testing
+- Ambient context dependency injection      
+<br/>
 
 ![Endpoints as seen in Swagger](/Images/SwaggerEndpoints.png)
 
 ![xUnit Tests](/Images/ApiTests.png)
+<br/><br/>
 
-## React-Redux TypeScript front-end. 
+## React Redux TypeScript front-end
 
-This application demos a few features:
-- React Redux state management
-- Axios for REST calls
-- React Bootstrap
-- LESS stylesheets
+This application demonstrates the following features:
+- **React** front-end using well-established architectural patterns in **TypeScript**
+- **React Redux** state management
+- **Axios** for REST API calls
+- **React Bootstrap** with **LESS** stylesheets
+- Real-time communication with **SignalR** (coming soon)
+<br/>
 
 ![Books Collection UI](/Images/BooksCollectionUI.png)
 ![Google Title Search](/Images/TitleSearch.png)
