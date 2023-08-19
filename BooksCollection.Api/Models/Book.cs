@@ -31,6 +31,7 @@ namespace BooksCollection.Api.Models
         public BookCategory? Category { get; set; }
         public string? OtherCategoryName { get; set; }
         public string? ImageUrl { get; set; }
+        //public double? Rating { get; set; }
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]

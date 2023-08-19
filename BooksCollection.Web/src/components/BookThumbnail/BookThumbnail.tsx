@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import "./BookThumbnail.less";
 import BookDetails from "../BookDetails/BookDetails";
 import { Book } from "../../models/Book";
-import { bookThumbnailUnavailableSrc } from "../../utils/constants";
+import { BOOK_THUMBNAIL_UNAVAILABLE_SRC } from "../../utils/constants";
 
 const BookThumbnail: React.FC<{ book: Book }> = ({ book }) => {
     const [showModal, setShowModal] = useState(false);
@@ -11,7 +11,7 @@ const BookThumbnail: React.FC<{ book: Book }> = ({ book }) => {
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
-    const srcImageUrl = book?.imageUrl ?? bookThumbnailUnavailableSrc;
+    const srcImageUrl = book?.imageUrl ?? BOOK_THUMBNAIL_UNAVAILABLE_SRC;
 
     return (
         <div>

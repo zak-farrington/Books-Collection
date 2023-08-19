@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../store/store";
 import { addBook, getBooksList, searchGoogleBooks, selectGoogleSearchBooks } from "../../store/booksSlice";
-import { bookThumbnailUnavailableSrc } from "../../utils/constants";
+import { BOOK_THUMBNAIL_UNAVAILABLE_SRC } from "../../utils/constants";
 import { Book, BookCategory, defaultBook } from "../../models/Book";
 import { AddBookRequest, AddBookResponse } from "../../models/AddBook";
 import BookForm from "../BookForm/BookForm";
@@ -69,15 +69,18 @@ const AddModifyBookForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 </Form.Group>
             </Form>
             <div className="googleBookResults">
-                {searchResults.map((resultBook: Book, index: number) => (
+                {searchResults?.length > 0 ? searchResults.map((resultBook: Book, index: number) => (
                     <div key={index} className="googleBookResultItem" onClick={() => handleSearchResultClick(resultBook)}>
-                        <img src={resultBook.imageUrl ?? bookThumbnailUnavailableSrc} alt={resultBook.title} className="googleSearchThumbnail" title="Click to prepopulate fields." />
+                        <img src={resultBook.imageUrl ?? BOOK_THUMBNAIL_UNAVAILABLE_SRC} alt={resultBook.title} className="googleSearchThumbnail" title="Click to prepopulate fields." />
                         <div>
                             <div><strong>{resultBook.title}</strong></div>
                             <div>{resultBook.description?.slice(0, 150)}</div>
                         </div>
                     </div>
-                ))}
+                )) : (
+                    <div/>
+                )}
+
             </div>
         </div>
     );

@@ -1,16 +1,25 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getBooksList, selectBooks } from "../../store/booksSlice";
+import { useAppDispatch } from "../../store/store";
+import { registerSignalREvents, unregisterSignalREvents } from "../../services/signalr";
+import { addBookToStore, getBooksList, modifyBookInStore, removeBookFromStore, selectBooks } from "../../store/booksSlice";
 import BookshelfRow from "../BookshelfRow/BookshelfRow";
 import BookshelfActions from "../BookshelfActions/BookshelfActions";
 import "./Bookshelf.less";
-import { useAppDispatch } from "../../store/store";
 
 const Bookshelf = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        // Retrieve book list on load
         dispatch(getBooksList());
+
+        // Add SignalR listeners
+        registerSignalREvents(dispatch, { addBookToStore, modifyBookInStore, removeBookFromStore });
+
+        return () => {
+            unregisterSignalREvents();
+        };
     }, []);
 
     const books = useSelector(selectBooks);

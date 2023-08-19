@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { Book, BookCategory } from '../../models/Book';
-import { bookThumbnailUnavailableSrc } from '../../utils/constants';
+import { BOOK_THUMBNAIL_UNAVAILABLE_SRC } from '../../utils/constants';
 import { formatCurrency } from '../../utils/formatters';
 import "./BookForm.less";
 
@@ -84,7 +84,7 @@ const BookForm: React.FC<{
                             className="bookDetailsThumbnail"
                             style={isReadOnly ? { cursor: "pointer"} : undefined}
                             onClick={handleThumbnailClick}
-                            src={book?.imageUrl || bookThumbnailUnavailableSrc}
+                            src={book?.imageUrl || BOOK_THUMBNAIL_UNAVAILABLE_SRC}
                             alt="Book Thumbnail" />
                     </div>
                 ) : (

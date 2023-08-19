@@ -1,4 +1,5 @@
-﻿using BooksCollection.Api.Constants;
+﻿using Azure.Core;
+using BooksCollection.Api.Constants;
 using BooksCollection.Api.Data;
 using BooksCollection.Api.Hubs;
 using BooksCollection.Api.Models;
@@ -24,8 +25,6 @@ namespace BooksCollection.Api.Repository.Concretes
         public async Task<BooksListResponse> GetBooksListResponseAsync()
         {
             var books = await _dbContext.Book.ToListAsync();
-
-
             var response = new BooksListResponse { Books = books };
             return response;
         }
@@ -63,7 +62,7 @@ namespace BooksCollection.Api.Repository.Concretes
 
             if (addBookResponse.IsSuccessful)
             {
-                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookAddedOrModified, request.Book);
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookAdded, request.Book);
             }
 
             return addBookResponse;
@@ -108,7 +107,7 @@ namespace BooksCollection.Api.Repository.Concretes
 
             if (modifyBookResponse.IsSuccessful)
             {
-                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookAddedOrModified, existingBook);
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookModified, existingBook);
             }
 
             return modifyBookResponse;
@@ -142,7 +141,7 @@ namespace BooksCollection.Api.Repository.Concretes
 
             if (deleteBookResponse.IsSuccessful)
             {
-                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookRemovedFrom);
+                await _hubContext.Clients.All.SendAsync(SignalR.Messages.BookRemoved, uid);
             }
 
             return deleteBookResponse;

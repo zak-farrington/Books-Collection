@@ -1,17 +1,17 @@
 import axios from "axios";
+import appConfig from "../appConfig";
 import { AddBookRequest, AddBookResponse } from "../models/AddBook";
 import { BooksListResponse } from "../models/BookList";
 import { ModifyBookRequest, ModifyBookResponse } from "../models/ModifyBook";
 import { DeleteBookResponse } from "../models/DeleteBook";
 import { GoogleBooksSearchResponse } from "../models/GoogleBooksSearch";
-import config from "../config";
 
 class ApiService {
     ApiUrlBase!: string;
 
     constructor() {
-        if (config.apiUrl?.length > 0) {
-            this.ApiUrlBase = config.apiUrl;
+        if (appConfig.apiUrl?.length > 0) {
+            this.ApiUrlBase = appConfig.apiUrl;
         } else {
             throw new Error('Cannot load Books API URL from config.');
         }
