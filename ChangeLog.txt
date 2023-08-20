@@ -1,3 +1,10 @@
+2023/08/19
+	- Add SignalR implementation to front-end to keep multiple clients in sync.
+	- Add nullcheck when searchResults is empty when searching Google.
+2023/08/17
+	- Add SignalR implementation to API layer.
+2023/08/12
+	- Complete view details and delete book functionality.
 2023/08/08
 	- Add models & components.
 	- Add React Redux store and booksSlice
