@@ -9,8 +9,8 @@ const BookshelfRow: React.FC<{ booksForRow: Book[] }> = ({ booksForRow }) => {
 
     return (
         <div className="bookshelfRow">
-            {booksForRow.map(b => (
-                <div className="bookThumbnailContainer">
+            {booksForRow.map((b, idx) => (
+                <div key={`book-thumb-${idx}`} className="bookThumbnailContainer">
                     <BookThumbnail book={b} />
                 </div>))
             }
