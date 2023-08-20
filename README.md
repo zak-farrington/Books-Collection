@@ -25,7 +25,7 @@ This application demonstrates the following features:
 - **React Redux** state management
 - **Axios** for REST API calls
 - **React Bootstrap** with **LESS** stylesheets
-- Real-time communication with **SignalR** (coming soon)
+- Real-time communication with **SignalR** 
 <br/>
 
 ![Books Collection UI](/Images/BooksCollectionUI.png)
