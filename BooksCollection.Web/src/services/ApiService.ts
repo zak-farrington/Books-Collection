@@ -13,7 +13,7 @@ class ApiService {
         if (appConfig.apiUrl?.length > 0) {
             this.ApiUrlBase = appConfig.apiUrl;
         } else {
-            throw new Error('Cannot load Books API URL from config.');
+            throw new Error("Cannot load Books API URL from config.");
         }
     }
 
