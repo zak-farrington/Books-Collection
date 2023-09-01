@@ -1,6 +1,6 @@
 # Books-Collection
 
-## .NET Core 7 REST API Demo
+## .NET 7 REST API Demo
 
 This application demonstrates the following features:
 - **RESTful API** designed using well-established architectural patterns in **C#**
